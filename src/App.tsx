@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { SetStateAction, useCallback, useEffect, useState } from 'react';
 import './App.css';
 import { Animals } from './components/Animals';
 import { Animal } from './api';
@@ -6,6 +6,7 @@ import { requestAnimals } from './api';
 import { Filter } from './components/Filter';
 import { Limit } from './components/Limit';
 import { Pagination } from './components/Pagination';
+import { debounce } from 'lodash';
 
 export default function App() {
     const [animals, setAnimals] = useState<Animal[]>([]);
@@ -37,6 +38,20 @@ export default function App() {
         }
     };
 
+    const updateFilterAnimals = useCallback(
+        debounce((value) => {
+            setAnimalInput(value);
+        }, 1000),
+        []
+    );
+
+     const updateFilterAmount = useCallback(
+         debounce((value) => {
+             setAmountInput(value);
+         }, 1000),
+         []
+     );
+
     useEffect(() => {
         setIsLoading(true);
         requestAnimals({
@@ -60,6 +75,8 @@ export default function App() {
                 setOffset={setOffset}
                 animalInput={animalInput}
                 amountInput={amountInput}
+                updateFilterAnimals={updateFilterAnimals}
+                updateFilterAmount={updateFilterAmount}
             />
             <div className="control-bar">
                 <Limit limit={limit} changeLimit={changeLimit} />

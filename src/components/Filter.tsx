@@ -1,4 +1,5 @@
 import React from 'react';
+import { testDebounce } from '../helpers/helpers';
 
 export interface FilterProps {
     setAnimalInput: (value: string) => void;
@@ -7,6 +8,8 @@ export interface FilterProps {
     setOffset: (value: number) => void;
     animalInput: string;
     amountInput:string;
+    updateFilterAnimals: (value: string) => void;
+    updateFilterAmount: (value: string) => void;
 }
 
 export const Filter = ({
@@ -15,18 +18,22 @@ export const Filter = ({
     setCurrentPage,
     setOffset,
     animalInput,
-    amountInput
+    amountInput,
+    updateFilterAnimals,
+    updateFilterAmount
     
 }: FilterProps): JSX.Element => {
     const animalFilterHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAnimalInput(e.target.value);
         setCurrentPage(1);
         setOffset(0);
+        updateFilterAnimals(e.target.value);
     };
     const amountFilterHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAmountInput(e.target.value);
         setCurrentPage(1);
         setOffset(0);
+        updateFilterAmount(e.target.value);
     };
     return (
         <div className="filter">
